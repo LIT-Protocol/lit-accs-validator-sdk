@@ -124,6 +124,10 @@ const mustMatchGivenTypes = (acc: any, properties: any) => {
  */
 const validate = (accs: any) => {
 
+    if( ! accs ){
+        FAILED("validate() param 'accs' cannot be empty!")
+    }
+
     let result = [...new Array(accs.length)];
 
     // -- validate each access control
@@ -150,6 +154,8 @@ const validate = (accs: any) => {
     let totalPasses : number = (result.map((r) => r == 'passed')).length;
 
     if( totalPasses < accs.length ) throw Error('Failed to validate')
+
+    return true
 }
 
 // TODO: schema/structural level validation
@@ -160,7 +166,7 @@ const validate = (accs: any) => {
 
 
 (async() => {
-    validate((await import('./cases/evm_basic')).default);
+    // validate((await import('./cases/evm_basic')).default);
     // validate((await import('./cases/evm_contract')).default);
     // validate((await import('./cases/operators')).default);
     // validate((await import('./cases/timelock')).default);

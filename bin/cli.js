@@ -15,7 +15,7 @@ const runCommand = (command) => {
 const repoName = process.argv[2];
 const src = 'https://github.com/websaam/sdk-ts-starter.git';
 const gitCheckoutCommand = `git clone --depth 1 ${src} ${repoName}`;
-const installDepsCommand = `cd ${repoName} && yarn && yarn devHtml`;
+const installDepsCommand = `cd ${repoName} && yarn`;
 
 console.log(`Cloning the repository with name ${repoName}`);
 
