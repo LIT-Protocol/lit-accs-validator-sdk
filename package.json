@@ -1,0 +1,47 @@
+{
+  "name": "@websaam/sdk-ts-starter",
+  "version": "1.0.6",
+  "main": "build/node/index.js",
+  "license": "MIT",
+  "bin": "./bin/cli.js",
+  "scripts": {
+    "clear": "rm -rf ./build/*",
+    "doc": "typedoc --entryPointStrategy expand ./src",
+    "watchSrc": "yarn tsc --watch",
+    "watchTsSrcForWeb": "node esbuild-web-watch.js",
+    "buildWeb": "node esbuild-web.js",
+    "devHtml": "yarn tsc && yarn buildWeb && concurrently 'yarn watchSrc' 'yarn watchTsSrcForWeb' 'node live-server.js'",
+    "watchTsSrcForNode": "node esbuild-node-watch.js",
+    "buildNode": "node esbuild-node.js",
+    "devReact": "concurrently 'yarn watchSrc' 'yarn watchTsSrcForNode' 'yarn runReact'",
+    "build": "concurrently 'yarn buildWeb' 'yarn buildNode' && yalc publish && yalc push",
+    "getReact": "cd tests && npx create-react-app react-app",
+    "runReact": "cd ./tests/react-app && yarn start",
+    "removeReact": "rm -rf ./tests/react-app",
+    "linkReact": "cd ./tests/react-app && yalc add @websaam/sdk-ts-starter",
+    "publish": "npm publish --access=public",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test_cases/**/*.ts'",
+    "copy": "copyfiles -f ./src/schemas/*.json src_built_from_ts/schemas",
+    "go": "concurrently 'yarn copy' 'yarn watchSrc' 'nodemon ./src_built_from_ts/index.js'",
+    "devNode": "concurrently 'yarn copy' 'yarn watchSrc' 'yarn watchTsSrcForNode' 'nodemon ./build/node/index.js'"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.0.6",
+    "chai": "^4.3.6",
+    "concurrently": "^7.2.2",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.14.49",
+    "esbuild-node-builtins": "^0.1.0",
+    "live-server": "^1.2.2",
+    "mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.23.7",
+    "typescript": "^4.7.4",
+    "yalc": "^1.0.0-pre.53"
+  },
+  "dependencies": {
+    "jsonschema": "^1.4.1"
+  }
+}

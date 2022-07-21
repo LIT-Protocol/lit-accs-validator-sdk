@@ -1,0 +1,59 @@
+{
+  "$id": "https://litprotocol.com/schemas/LPACC_SOL.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LPACC_SOL",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "method": {
+      "type": "string"
+    },
+    "params": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "chain": {
+      "enum": [
+        "solana",
+        "solanaDevnet",
+        "solanaTestnet"
+      ]
+    },
+    "returnValueTest": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "comparator": {
+          "enum": [
+            "contains",
+            "=",
+            ">",
+            ">=",
+            "<",
+            "<="
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "comparator",
+        "value",
+        "key"
+      ]
+    }
+  },
+  "required": [
+    "method",
+    "params",
+    "chain",
+    "returnValueTest"
+  ]
+}
