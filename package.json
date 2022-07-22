@@ -20,7 +20,7 @@
     "removeReact": "rm -rf ./tests/react-app",
     "linkReact": "cd ./tests/react-app && yalc add @websaam/lit-accs-validator",
     "publish": "npm publish --access=public",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test_cases/**/*.ts'",
+    "test": "yarn build && env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test_cases/**/*.ts'",
     "copy": "copyfiles -f ./src/schemas/*.json src_built_from_ts/schemas",
     "go": "concurrently 'yarn copy' 'yarn watchSrc' 'nodemon ./src_built_from_ts/index.js'",
     "devNode": "concurrently 'yarn copy' 'yarn watchSrc' 'yarn watchTsSrcForNode' 'nodemon ./build/node/index.js'"

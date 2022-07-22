@@ -12,7 +12,12 @@ const FAILED = (msg) => { throw new Error(`❌ [${msg}]`) }
  * @param schemas 
  * @returns 
  */
-const getSchema = (acc: any, schemas: any) => {
+const getSchema = (acc: any, schemas: any = [
+    require('./schemas/LPACC_EVM_BASIC.json'),
+    require('./schemas/LPACC_EVM_CONTRACT.json'),
+    require('./schemas/LPACC_SOL.json'),
+    require('./schemas/LPACC_ATOM.json')
+]) => {
         
     let schema: object;
     let arr: any;
@@ -137,12 +142,7 @@ const validate = (accs: any) => {
         if(acc?.operator) return;
 
         // -- Pick the correct schema
-        let schema : any = getSchema(acc, [
-            require('./schemas/LPACC_EVM_BASIC.json'),
-            require('./schemas/LPACC_EVM_CONTRACT.json'),
-            require('./schemas/LPACC_SOL.json'),
-            require('./schemas/LPACC_ATOM.json')
-        ]);
+        let schema : any = getSchema(acc);
 
         // -- check acc has all the keys that stated in the schema
         console.log(`---------------`);
@@ -165,6 +165,7 @@ const validate = (accs: any) => {
 // TODO: 
 
 
+// -- Run this once so it gets imported to `src_built_from_ts`
 (async() => {
     // validate((await import('./cases/evm_basic')).default);
     // validate((await import('./cases/evm_contract')).default);
@@ -181,4 +182,24 @@ const validate = (accs: any) => {
     // validate((await import('./cases/kyve')).default);
 })();
 
-export { validate }
+const testCases = [
+    require('./cases/evm_basic').default,
+    require('./cases/evm_contract').default,
+    require('./cases/operators').default,
+    require('./cases/timelock').default,
+    require('./cases/domain').default,
+    require('./cases/sol_1').default,
+    require('./cases/sol_2').default,
+    require('./cases/sol_3').default,
+    require('./cases/sol_4').default,
+    require('./cases/sol_5').default,
+    require('./cases/cosmos_1').default,
+    require('./cases/cosmos_2').default,
+    require('./cases/kyve').default,
+];
+
+export { 
+    validate,
+    testCases,
+    getSchema
+}

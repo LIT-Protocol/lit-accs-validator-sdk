@@ -1,10 +1,21 @@
 import { expect } from "chai";
+import { validate, testCases, getSchema } from '../build/node/index';
 
 describe('Access Control Conditions test', () => { // the tests container
 
-    it('passes json lint ', () => { // the single test
-        const test = 1;
+    testCases.forEach((testCase, i) => {
 
-        expect(test).to.be.equal(1)
-    });
+        testCase.forEach((acc, y) => {
+            const chain = acc?.chain;
+            const schema = getSchema(acc)?.title;
+
+            if( ! acc?.operator ){
+                it(`${i} Testing ${chain} on schema: ${schema}`, async () => { // the single test
+                    expect(await validate(testCase)).to.be.equal(true)
+                });
+            }
+
+        })
+        
+    })
 });
