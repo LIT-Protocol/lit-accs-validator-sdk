@@ -1,7 +1,7 @@
 # Getting started
 
 ```
-yarn && yarn devNode
+yarn && yarn devHtml
 ```
 
 # NPM (temp npm location)

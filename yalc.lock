@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@websaam/lit-accs-validator": {
+      "signature": "a9a2f813ec6a4731381e3b5b89fc4f37",
+      "file": true
+    }
+  }
+}

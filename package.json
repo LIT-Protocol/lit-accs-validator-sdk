@@ -1,6 +1,6 @@
 {
   "name": "@websaam/lit-accs-validator",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "main": "build/node/index.js",
   "license": "MIT",
   "bin": "./bin/cli.js",
@@ -14,15 +14,15 @@
     "watchTsSrcForNode": "node esbuild-node-watch.js",
     "buildNode": "node esbuild-node.js",
     "devReact": "concurrently 'yarn watchSrc' 'yarn watchTsSrcForNode' 'yarn runReact'",
-    "build": "concurrently 'yarn buildWeb' 'yarn buildNode'",
+    "build": "yarn tsc && yarn copy && concurrently 'yarn buildWeb' 'yarn buildNode'",
     "getReact": "cd tests && npx create-react-app react-app",
     "runReact": "cd ./tests/react-app && PORT=3001 yarn start",
     "removeReact": "rm -rf ./tests/react-app",
     "linkReact": "cd ./tests/react-app && yalc add @websaam/lit-accs-validator",
-    "publish": "npm publish --access=public",
+    "publish2": "npm publish --access=public",
     "test": "yarn build && env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test_cases/**/*.ts'",
     "copy": "copyfiles -f ./src/schemas/*.json src_built_from_ts/schemas",
-    "go": "concurrently 'yarn copy' 'yarn watchSrc' 'nodemon ./src_built_from_ts/index.js'",
+    "go": "yarn build && yalc publish && yalc push",
     "devNode": "concurrently 'yarn copy' 'yarn watchSrc' 'yarn watchTsSrcForNode' 'nodemon ./build/node/index.js'"
   },
   "devDependencies": {
@@ -42,6 +42,7 @@
     "yalc": "^1.0.0-pre.53"
   },
   "dependencies": {
+    "@websaam/lit-accs-validator": "file:.yalc/@websaam/lit-accs-validator",
     "jsonschema": "^1.4.1"
   }
 }

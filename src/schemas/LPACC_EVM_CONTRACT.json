@@ -88,6 +88,7 @@
         }
       },
       "required": [
+        "key",
         "comparator",
         "value"
       ]

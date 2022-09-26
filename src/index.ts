@@ -1,5 +1,26 @@
-const PASSED = (msg) => console.log(`✅ [${msg}]`);
-const FAILED = (msg) => { throw new Error(`❌ [${msg}]`) }
+declare global {
+    interface Window {
+        litValidatorStatus: object;
+    }
+}
+
+if(typeof window !== 'undefined'){
+    global.litValidatorStatus = { status: 'init', msg: '' };
+
+}
+
+const PASSED = (msg) => {
+    if(global){
+        global.litValidatorStatus = { status: 'PASSED', msg };
+    }
+    console.log(`✅ [${msg}]`);
+};  
+const FAILED = (msg) => { 
+    if(global){
+        global.litValidatorStatus = { status: 'FAILED', msg };
+    }
+    throw new Error(`❌ [${msg}]`);
+ }
 
 /**
  * 
@@ -63,11 +84,11 @@ const mustMatchRequiredKeys = (acc, requiredKeys) => {
 
         // each required key must exist in the given 
         if(! Object.keys(acc).includes(key)){
-            FAILED(`${key} is missing}`);  
+            FAILED(`${key} is missing`);  
         };
     });
 
-    PASSED(`${requiredKeys.length} mustMatchRequiredKeys`)
+    // PASSED(`${requiredKeys.length} mustMatchRequiredKeys`)
 }
 
 /**
@@ -82,17 +103,23 @@ const getVarType = (val) => Object.prototype.toString.call(val).slice(8, -1).toL
  * @param acc 
  * @param properties 
  */
-const mustMatchGivenTypes = (acc: any, properties: any) => {
+const mustMatchGivenTypes = (acc: any, properties: any, schemaName: string = '') => {
 
     let propKeys = Object.keys(properties);
 
+    console.log(propKeys);
+    
+
     propKeys.forEach((propKey, i) => {
+
+        console.log("propKey:", propKey);
         
         const prop = properties[propKey];
 
         // -- recursivly check sub properties
         if(prop.properties){
-            mustMatchGivenTypes(acc[propKey], prop.properties);
+            console.log("-- deeper --");
+            mustMatchGivenTypes(acc[propKey], prop.properties, schemaName);
         }
         
         // -- if a type is specified, then must match
@@ -101,7 +128,12 @@ const mustMatchGivenTypes = (acc: any, properties: any) => {
             const inputType = getVarType(acc[propKey]);
             const requiredType = prop.type;
 
-            // console.log(`...checking ${propKey}: ${inputType} === ${requiredType}`)
+            // -- cannot be empty
+            if(inputType === 'undefined'){
+                FAILED(`key "${propKey}" is missing. Please check schema name ${schemaName}`);
+            }
+
+            console.log(`...checking ${propKey}: ${inputType} === ${requiredType}`)
             
             if( requiredType !== inputType){
                 FAILED(`"${propKey}":"${acc[propKey]}" ${inputType} !== ${requiredType}`);
@@ -120,7 +152,7 @@ const mustMatchGivenTypes = (acc: any, properties: any) => {
             }
         }
     })
-    PASSED(`${Object.keys(properties).length} keys matched given types`)
+    // PASSED(`${Object.keys(properties).length} keys matched given types`)
 }
 
 /**
@@ -134,6 +166,7 @@ const validate = (accs: any) => {
     }
 
     let result = [...new Array(accs.length)];
+    let validSchemas = [];
 
     // -- validate each access control
     [...accs].forEach((acc, i) => {
@@ -146,14 +179,27 @@ const validate = (accs: any) => {
 
         // -- check acc has all the keys that stated in the schema
         console.log(`---------------`);
-        console.log(`...checking ${acc.chain} on ${schema.title} schema`);
-        mustMatchRequiredKeys(acc, schema.required);
-        mustMatchGivenTypes(acc, schema.properties);
+
+        // -- If it's array (poap)
+        if( getVarType(acc) == 'array'){
+            validate(acc);
+        }else{
+            console.log(`...checking ${acc.chain} on ${schema.title} schema`);
+            mustMatchRequiredKeys(acc, schema.required);
+            mustMatchGivenTypes(acc, schema.properties, schema.title);
+    
+            if( ! validSchemas.includes(schema.title) ){
+                validSchemas.push(schema.title)
+            }
+        }
+        
     })
 
     let totalPasses : number = (result.map((r) => r == 'passed')).length;
 
-    if( totalPasses < accs.length ) throw Error('Failed to validate')
+    if( totalPasses < accs.length ) FAILED('Failed to validate')
+
+    PASSED(validSchemas);
 
     return true
 }
@@ -167,6 +213,7 @@ const validate = (accs: any) => {
 
 // -- Run this once so it gets imported to `src_built_from_ts`
 (async() => {
+    validate((await import('./cases/returnValueTrueIsString')).default);
     // validate((await import('./cases/evm_basic')).default);
     // validate((await import('./cases/evm_contract')).default);
     // validate((await import('./cases/operators')).default);
