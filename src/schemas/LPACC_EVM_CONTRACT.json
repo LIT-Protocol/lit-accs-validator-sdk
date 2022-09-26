@@ -73,6 +73,9 @@
     "returnValueTest": {
       "type": "object",
       "properties": {
+        "key": {
+          "type": "string"
+        },
         "comparator": {
           "enum": [
             "contains",

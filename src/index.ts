@@ -130,7 +130,7 @@ const mustMatchGivenTypes = (acc: any, properties: any, schemaName: string = '')
 
             // -- cannot be empty
             if(inputType === 'undefined'){
-                FAILED(`key "${propKey}" is missing. Please check schema name ${schemaName}`);
+                FAILED(`key "${propKey}" is missing. Please check schema ${schemaName}`);
             }
 
             console.log(`...checking ${propKey}: ${inputType} === ${requiredType}`)
@@ -213,7 +213,8 @@ const validate = (accs: any) => {
 
 // -- Run this once so it gets imported to `src_built_from_ts`
 (async() => {
-    validate((await import('./cases/returnValueTrueIsString')).default);
+    validate((await import('./cases/missingKey')).default);
+    // validate((await import('./cases/returnValueTrueIsString')).default);
     // validate((await import('./cases/evm_basic')).default);
     // validate((await import('./cases/evm_contract')).default);
     // validate((await import('./cases/operators')).default);

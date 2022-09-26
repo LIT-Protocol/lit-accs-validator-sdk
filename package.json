@@ -1,6 +1,6 @@
 {
   "name": "@websaam/lit-accs-validator",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "main": "build/node/index.js",
   "license": "MIT",
   "bin": "./bin/cli.js",
@@ -42,7 +42,6 @@
     "yalc": "^1.0.0-pre.53"
   },
   "dependencies": {
-    "@websaam/lit-accs-validator": "file:.yalc/@websaam/lit-accs-validator",
     "jsonschema": "^1.4.1"
   }
 }
