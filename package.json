@@ -1,6 +1,6 @@
 {
   "name": "@websaam/lit-accs-validator",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "build/node/index.js",
   "license": "MIT",
   "bin": "./bin/cli.js",

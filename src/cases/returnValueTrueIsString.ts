@@ -27,14 +27,14 @@ export default [
             "type": "bool"
           }
         ],
-        "constant": false,
+        "constant": "false",
         "stateMutability": "view",
         "type": "function"
       },
       "chain": "mumbai",
       "returnValueTest": {
         "comparator": "=",
-        "value": true
+        "value": "true"
       }
     }
   ]

@@ -176,6 +176,7 @@ const validate = (accs: any) => {
 
         // -- Pick the correct schema
         let schema : any = getSchema(acc);
+        console.log("schema:", schema);
 
         // -- check acc has all the keys that stated in the schema
         console.log(`---------------`);
@@ -213,14 +214,14 @@ const validate = (accs: any) => {
 
 // -- Run this once so it gets imported to `src_built_from_ts`
 (async() => {
-    validate((await import('./cases/missingKey')).default);
+    // validate((await import('./cases/missingKey')).default);
     // validate((await import('./cases/returnValueTrueIsString')).default);
     // validate((await import('./cases/evm_basic')).default);
     // validate((await import('./cases/evm_contract')).default);
     // validate((await import('./cases/operators')).default);
     // validate((await import('./cases/timelock')).default);
     // validate((await import('./cases/domain')).default);
-    // validate((await import('./cases/sol_1')).default);
+    validate((await import('./cases/sol_1')).default);
     // validate((await import('./cases/sol_2')).default);
     // validate((await import('./cases/sol_3')).default);
     // validate((await import('./cases/sol_4')).default);

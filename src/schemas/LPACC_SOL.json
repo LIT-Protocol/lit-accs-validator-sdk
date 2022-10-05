@@ -16,6 +16,28 @@
         }
       ]
     },
+    "pdaParams":{
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "pdaInterface": {
+      "type": "object",
+      "properties":{
+        "offset":{
+          "type": "number"
+        },
+        "fields":{
+          "type": "object"
+        }
+      }
+    },
+    "pdaKey" :{
+      "type": "string"
+    },
     "chain": {
       "enum": [
         "solana",
@@ -53,6 +75,9 @@
   "required": [
     "method",
     "params",
+    "pdaParams",
+    "pdaInterface",
+    "pdaKey",
     "chain",
     "returnValueTest"
   ]
