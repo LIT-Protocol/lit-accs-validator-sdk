@@ -1,3 +1,5 @@
+# ❌ This package is outdated and no longer maintained. Please avoid using it.
+
 # Getting started
 
 ```
