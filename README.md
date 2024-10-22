@@ -1,5 +1,4 @@
-# ❌ This package is outdated and no longer maintained. Please avoid using it.
-
+# ❌ This package is outdated and no longer maintained - Use this instead https://accs.getlit.dev/ (22 Oct, 2024)
 # Getting started
 
 ```
